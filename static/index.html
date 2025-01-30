@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/> <!-- Todos los caracteres -->
+    <!-- Ajuste de la página en los dispositivos -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/reservas2.ico" />
+    <link rel="stylesheet" href="style.css"/>
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Reservas</title> <!-- Título en el navegador -->
+</head>
+<body>
+<div class="encabezado">
+    <div class="text-reservas">
+        <h1>Sistema de reservas</h1>
+        <span>Gestiona tu reserva con unos cuantos clics</span>
+    </div>
+</div>
+<main>
+    <section>
+        <h2>Crear Reserva</h2>
+        <form id="reservation-form">
+            <label for="Nombre">Nombre: </label>
+            <input type="text" id="nombre" name="Nombre" required>
+            <label for="Fecha">Fecha: </label>
+            <input type="date" id="fecha" name="Fecha" required>
+            <label for="Hora">Hora: </label>
+            <input type="time" id="hora" name="Hora" required>
+            <label for="card-number">Número de Tarjeta: </label>
+            <input type="text" id="card-number" name="Numero Tarjeta" placeholder="#### #### #### ####" maxlength="19" required>
+            <button id="añadirReserva" type="button">Guardar</button>
+            <button id="fetchTodos" type="button">Ver Reservas</button>
+            <button id="fetchImage">Cambiar Imagen</button>
+        </form>
+    </section>
+    <section>
+        <h2>Reservas</h2>
+        <table>
+            <thead align="center" valign="bottom">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th><button id="clearTodos">Eliminar</button></th>
+            </tr>
+            </thead>
+            <tbody id="reservas-table"></tbody> <!-- Contenedor de filas -->
+        </table>
+        <div class="image-container">
+            <img src="images/calendario.png" alt="Descripción de la imagen">
+        </div>
+    </section>
+</main>
+<script src="script.js"></script>
+<footer>
+    <p>by: Saray Mendivelso</p>
+</footer>
+</body>
+</html>
