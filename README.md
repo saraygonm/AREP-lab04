@@ -5,9 +5,12 @@ través de una interfaz web y una API REST. Además, implementa un servidor web 
 Maven, capaz de manejar solicitudes HTTP para proporcionar archivos estáticos
 y responder a solicitudes REST para gestionar reservas y mostrar imágenes.
 
--------------
+
+
 ## 📍 Comenzando
 Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas.
+
+
 
 ### 🔧 Prerrequisitos
 
@@ -21,6 +24,8 @@ Para ejecutar el proyecto necesitas instalar:
   - Eclipse 
   - Apache NetBeans
 ------------------
+
+
 ### ⚙️ Instalación
 
 **1. Clona el repositorio:**
