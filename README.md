@@ -61,10 +61,7 @@ la aplicación.*
 ---------------------
 ### ✅ Ejecutar las pruebas
 
-Para ejecutar las pruebas automáticas, usa el siguiente comando:
-```sh
-mvn test
-```
+Para ejecutar las pruebas automáticas dirigete a la carpeta ServerTest y ejecutalas en tu IDE, Puedes ejecutarlas despues de haber hecho lo anterior y haber usado todos los botones de la página.
 
 Las pruebas incluyen validaciones de:
 - Conexión al servidor
