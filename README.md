@@ -4,9 +4,9 @@ Este proyecto es un sistema de reservas que permite hacer su gestión a
 través de una interfaz web y una API REST. Además, implementa un servidor web en Java utilizando
 Maven, capaz de manejar solicitudes HTTP para proporcionar archivos estáticos
 y responder a solicitudes REST para gestionar reservas y mostrar imágenes.
+
 -------------
 ## 📍 Comenzando
-
 Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas.
 
 ### 🔧 Prerrequisitos
@@ -47,10 +47,12 @@ Para ejecutar el proyecto necesitas instalar:
    ```
    http://localhost:8080
    ```
-**6. Una vez iniciado el servidor, podrás visualizar la página web en tu navegador.
+*Una vez iniciado el servidor, podrás visualizar la página web en tu navegador.
 Además, en la terminal de tu IDE seleccionado, podrás monitorear las 
 peticiones HTTP junto con la información relevante que se esté procesando en 
-la aplicación.**
+la aplicación.*
+
+
 ---------------------
 ### ✅ Ejecutar las pruebas
 
