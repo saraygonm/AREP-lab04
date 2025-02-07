@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tableBody.appendChild(row);
                 });
 
-                // ✅ Agregar evento a los botones de eliminar después de generar la tabla
+                //  Agregar evento a los botones de eliminar después de generar la tabla
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const index = event.target.getAttribute('data-index');
@@ -140,14 +140,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
      function deleteReserva(index) {
-         console.log("Enviando DELETE para la reserva con índice:", index); // depuración
+         console.log("Intentando eliminar reserva en índice:", index); // Depuración
 
          fetch(`/api/services/${index}`, {
-             method: 'DELETE'
+             method: 'DELETE',
+             headers: {
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json'
+             }
          })
          .then(response => response.json())
          .then(result => {
-             console.log("Respuesta del servidor:", result); //depuración
+             console.log("Respuesta del servidor:", result);
              if (result.status === 'success') {
                  alert('Reserva eliminada correctamente');
                  document.getElementById('fetchTodos').click(); // Refrescar la lista de reservas
@@ -160,5 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
              alert('Error en la conexión al servidor.');
          });
      }
+
 
 });

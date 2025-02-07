@@ -30,12 +30,12 @@ Para ejecutar el proyecto necesitas instalar:
 
 **1. Clona el repositorio:**
    ```sh
-   git clone https://github.com/saraygonm/AREP-Taller01.git
+   git clone https://github.com/saraygonm/AREP-Taller02.git
    ```
 
 **2. Entra en la carpeta del proyecto:**
    ```sh
-   cd AREP-Taller01
+   cd AREP-Taller02
    ```
 
 **3. Compila el proyecto con Maven (debe estar previamente configurado):**
@@ -48,6 +48,12 @@ Para ejecutar el proyecto necesitas instalar:
    mvn exec:java
    ```
 
+
+<p align="center">
+<img src="static/images/read/exec.png" alt="" width="700px">
+</p>
+
+
 **5. Accede a la aplicación, buscando en tu navegador:**
    ```
    http://localhost:8080
@@ -57,19 +63,122 @@ Además, en la terminal de tu IDE seleccionado, podrás monitorear las
 peticiones HTTP junto con la información relevante que se esté procesando en 
 la aplicación.*
 
+<!-- Creación de tabla para alinear las imágenes lado a lado.-->
+| <img src="static/images/read/localhost.png" alt="Descarga local" width="500px"> | <img src="static/images/read/terminal.png" alt="Importar carpetas" width="500px"> |
+|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| **Imagen 1: Página web en navegador**                                        | **Imagen 2: Terminal IDE**                                                        |
 
 ---------------------
 ### ✅ Ejecutar las pruebas
 
-Para ejecutar las pruebas automáticas dirigete a la carpeta ServerTest y ejecutalas en tu IDE, Puedes ejecutarlas despues de haber hecho lo anterior y haber usado todos los botones de la página.
+Para ejecutar las pruebas automáticas, el servidor debe estar en ejecución
+ ```sh
+   mvn exec:java
+   ```
+
+<!-- Creación de tabla para alinear las imágenes lado a lado.-->
+| <img src="static/images/read/test1.png" alt="Descarga local" width="500px"> | <img src="static/images/read/test2.png" alt="Importar carpetas" width="500px"> |
+|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| **Imagen 1: Página web en navegador**                                       | **Imagen 2: Terminal IDE**                                                     |
+
 
 Las pruebas incluyen validaciones de:
-- Conexión al servidor
-- Creación de reservas
-- Eliminación de reservas
-- Obtención de datos de la API
+- Endpoints principales (/App/hello, /App/pi)
+- API de reservas (GET, POST, DELETE)
+- Archivos estáticos (index.html, imágenes)
 ------------------------------
+
+### 📂 Cambios Realizados en el Proyecto
+Para agregar estos endpoints y mejorar la estructura del servidor, se realizaron las siguientes modificaciones:
+
+#### 📉 Se agregaron los endpoints `/App/hello?name=Pedro` y `/App/pi`
+- Ahora el servidor responde dinámicamente a consultas **GET** con parámetros.
+
+#### 📉 Implementación de extracción de parámetros en las rutas GET
+- Se añadió soporte para manejar **query parameters** en las solicitudes.
+
+#### 📉 Se ajustó la ubicación de archivos estáticos
+- Antes estaban en `static/`, ahora se sirven desde `target/classes/webroot/`.
+
+
+------------------
+
+###  📚 Endpoints Disponibles en el Servidor
+
+#### ➕ 1. Endpoints para archivos estáticos
+- 🌍 [http://localhost:8080/index.html](http://localhost:8080/index.html) → Página principal
+
+<p align="center">
+<img src="static/images/read/1.png" alt="" width="700px">
+</p>
+
+- 🌍 [http://localhost:8080/static/images/calendario.png](http://localhost:8080/static/images/calendario.png) → Imagen de calendario
+
+<p align="center">
+<img src="static/images/read/4.png" alt="" width="700px">
+</p>
+
+- 🌍 [http://localhost:8080/static/images/tarjeta.png](http://localhost:8080/static/images/tarjeta.png) → Imagen de tarjeta
+
+<p align="center">
+<img src="static/images/read/3.png" alt="" width="700px">
+</p>
+
+- 🌍 [http://localhost:8080/static/style.css](http://localhost:8080/static/style.css) → CSS del sitio
+
+<p align="center">
+<img src="static/images/read/5.png" alt="" width="700px">
+</p>
+
+#### 🔢 2. Endpoints REST (API de reservas)
+#### 🔹 Obtener todas las reservas:
+- **GET** `http://localhost:8080/api/services`
+
+#### 🟢 Agregar una nueva reserva:
+- **POST** `http://localhost:8080/api/services`
+- **Cuerpo JSON:**
+```json
+{
+  "nombre": "Juan",
+  "fecha": "2025-02-06",
+  "hora": "12:00",
+  "tarjeta": "1234 5678 9012 3456"
+}
+```
+<p align="center">
+<img src="static/images/read/api.png" alt="" width="700px">
+</p>
+
+#### 🔴 Eliminar una reserva específica (por índice):
+Los navegadores bloquean solicitudes DELETE por seguridad, entonces para probar que funciona la podemos hacer en el terminal de tu IDE de la siguiente manera:
+- **DELETE** `http://localhost:8080/api/services/{id}`
+- **Ejemplo:** `http://localhost:8080/api/services/0`
+
+<p align="center">
+<img src="static/images/read/delete.png" alt="" width="700px">
+</p>
+
+
+#### 💡 3. Endpoints adicionales solicitados en el enunciado
+- 🌍 [http://localhost:8080/App/hello?name=Pedro](http://localhost:8080/App/hello?name=Pedro) → Devuelve **"Hello Pedro!"**
+<p align="center">
+<img src="static/images/read/pedro.png" alt="" width="700px">
+</p>
+
+- 🌍 [http://localhost:8080/App/pi](http://localhost:8080/App/pi) → Devuelve **"3.141592653589793"**
+
+<p align="center">
+<img src="static/images/read/pi.png" alt="" width="700px">
+</p>
+
+----------
+
 ### 🏗️ Arquitectura
+#### Diagrama de clases 
+
+<p align="center">
+<img src="static/images/read/class_diagram.png" alt="" width="700px">
+</p>
 
 #### Servidor Java
 

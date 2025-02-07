@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Server {
     private static final int PORT = 8080;
-    private static final String WEB_ROOT = "static"; //Ruta del sistema
+    private static final String WEB_ROOT = "target/classes/webroot"; //Ruta del sistema
     private static final List<String> services = new ArrayList<>();
 
     public static void main(String[] args){ //java MyserverProgram 8080
@@ -56,7 +56,20 @@ public class Server {
                 if (servicio.equals("GET")) {
                     if (requestfile.equals("/api/services")) {
                         GetAll(locutor);
-                    } else {
+                    // lab2 Nueva Implementación para "/App/hello" y "/App/pi"
+                    } else if (requestfile.startsWith("App/hello")){
+                        String name = "World"; //se usa si el user no proporciona un nombre en la URL
+                        if(requestfile.contains("?name")){
+                            //se usa doblre \\ para tratar a ? como un signo literal
+                            name = requestfile.split("\\?name=")[1]; //toma la segunda parte despues del ?name=
+                        }
+                        String response = "Hello" + name + "!";
+                        sendResponse(locutor,200,"OK","text/plain",response.getBytes(StandardCharsets.UTF_8));
+                    } else if (requestfile.equals("/App/pi")) { //equals porque no van a haber parametros o texto de más
+                        String response = String.valueOf(Math.PI);
+                        sendResponse(locutor, 200, "OK", "text/plain", response.getBytes(StandardCharsets.UTF_8));
+                    }
+                    else{
                         GetRequest(locutor, requestfile);
                     }
                 } else if (servicio.equals("POST")) {
@@ -81,10 +94,11 @@ public class Server {
                         sendError(locutor, 404, "Not Found");
                     }
                 }
-                else if (servicio.equals("DELETE") && requestfile.startsWith("/api/services/")) {
+                else if (servicio.equalsIgnoreCase("DELETE") && requestfile.startsWith("/api/services/")) {
+                    System.out.println("Request DELETE recibido correctamente");
                     deleteReserva(locutor, requestfile);
-                }
-                else{
+                } else {
+                    System.out.println("Método no permitido: " + servicio);
                     sendError(locutor, 405, "Method Not Allowed");
                 }
             } catch (IOException exep) {
@@ -93,60 +107,110 @@ public class Server {
         }
 
         private void deleteReserva(OutputStream locutor, String requestfile) throws IOException {
-            System.out.println("Request de eliminación recibida: " + requestfile);
+            System.out.println("Request DELETE recibida: " + requestfile);
+            System.out.println("Lista de reservas antes de eliminar: " + services);
 
-            // Extraer el índice correctamente desde la URL
+            // Dividir la URL en partes
             String[] parts = requestfile.split("/");
-            if (parts.length < 3) { // La URL debe ser "/api/services/{index}"
+
+            if (parts.length < 4) { // Verificar que hay suficientes partes en la URL
+                System.out.println("Error: URL mal formada para DELETE");
                 sendError(locutor, 400, "Bad Request");
                 return;
             }
 
             try {
-                int index = Integer.parseInt(parts[3]); // Extrae el índice correctamente
+                int index = Integer.parseInt(parts[3]); // Extraer el índice
                 System.out.println("Índice recibido para eliminar: " + index);
 
+                if (services.isEmpty()) {
+                    System.out.println("Error: No hay reservas para eliminar.");
+                    sendError(locutor, 404, "No hay reservas para eliminar");
+                    return;
+                }
+
                 if (index >= 0 && index < services.size()) {
+                    System.out.println("Reserva encontrada. Eliminando...");
                     String removedReserva = services.remove(index);
                     System.out.println("Reserva eliminada: " + removedReserva);
-                    System.out.println("Reservas restantes: " + services);
+                    System.out.println("Lista de reservas después de eliminar: " + services);
 
                     String responseJson = "{\"status\":\"success\",\"message\":\"Reserva eliminada correctamente\"}";
                     sendResponse(locutor, 200, "OK", "application/json", responseJson.getBytes(StandardCharsets.UTF_8));
                 } else {
+                    System.out.println("Error: Índice fuera de rango.");
                     sendError(locutor, 404, "Reserva no encontrada");
                 }
             } catch (NumberFormatException e) {
+                System.out.println("Error: Índice no es un número válido.");
                 sendError(locutor, 400, "Índice inválido");
             }
         }
 
 
 
-        private void GetRequest(OutputStream locutor, String requestfile) throws IOException{
+
+        private void GetRequest(OutputStream locutor, String requestfile) throws IOException {
+            // Separar el path de los query parameters
+            String[] parts = requestfile.split("\\?");
+            String path = parts[0];
+            String queryParams = parts.length > 1 ? parts[1] : "";
+
+            // Remover parámetros de consulta del requestfile si los tiene
             if (requestfile.contains("?")) {
                 requestfile = requestfile.substring(0, requestfile.indexOf("?"));
             }
-            if (requestfile.equals("/api/imgTarjeta")) {
-                //Creacion de la ruta para la imagen
-                Path imagePath = Paths.get(WEB_ROOT, "images/tarjeta.png");
-                if (Files.exists(imagePath)){
-                    sendResponse(locutor,200,"OK","tarjeta/png",Files.readAllBytes(imagePath));
-                }else{
-                    sendError(locutor,404,"Image Not Found");
-                }
-            }else{
-                //Construccion ruta al archivo, en respuesta a una solicitudpara dirigir al /index.html si el request file es /
-                Path filePath = Paths.get(WEB_ROOT, requestfile.equals("/") ? "index.html" : requestfile.substring(1));
-                if (Files.exists(filePath)) {
-                    byte[] content = Files.readAllBytes(filePath);
-                    String contentType = Files.probeContentType(filePath);
-                    sendResponse(locutor, 200, "OK", contentType, content);
-                }else {
-                    sendError(locutor,404, "Not Found");
-                }
+
+            // Remover el prefijo "/static/" correctamente
+            requestfile = requestfile.replaceFirst("^/static/", "/");
+
+            // Imprimir la ruta absoluta para depuración
+            Path filePath = Paths.get(WEB_ROOT, requestfile.equals("/") ? "index.html" : requestfile.substring(1));
+            System.out.println("Buscando archivo en: " + filePath.toAbsolutePath());
+
+            if (Files.exists(filePath)) {
+                byte[] content = Files.readAllBytes(filePath);
+                String contentType = Files.probeContentType(filePath);
+                sendResponse(locutor, 200, "OK", contentType, content);
+                return;
             }
+
+            // Manejar imagen específica "/api/imgTarjeta"
+            if (requestfile.equals("/api/imgTarjeta")) {
+                Path imagePath = Paths.get(WEB_ROOT, "images/tarjeta.png");
+                if (Files.exists(imagePath)) {
+                    sendResponse(locutor, 200, "OK", "image/png", Files.readAllBytes(imagePath));
+                } else {
+                    sendError(locutor, 404, "Image Not Found");
+                }
+                return;
+            }
+
+            // Manejar "/App/hello?name=Pedro"
+            if (path.equals("/App/hello")) {
+                String name = "World";
+                for (String param : queryParams.split("&")) {
+                    if (param.startsWith("name=")) {
+                        name = param.split("=")[1];
+                    }
+                }
+                String response = "Hello " + name + "!";
+                sendResponse(locutor, 200, "OK", "text/plain", response.getBytes(StandardCharsets.UTF_8));
+                return;
+            }
+
+            // Manejar "/App/pi"
+            if (requestfile.equals("/App/pi")) {
+                String response = String.valueOf(Math.PI);
+                sendResponse(locutor, 200, "OK", "text/plain", response.getBytes(StandardCharsets.UTF_8));
+                return;
+            }
+
+            // Si el archivo no existe, devolver error 404
+            sendError(locutor, 404, "Not Found");
         }
+
+
 
         //Conversion de \  a \\ y " a \"
         private String escapeJson(String a) {
