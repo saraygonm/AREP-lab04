@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/api/services')
             .then(response => response.json())
             .then(data => {
-                console.log("Datos recibidos:", data); //  Depuración
+                console.log("Datos recibidos:", data);
 
                 const tableBody = document.getElementById('reservas-table');
                 tableBody.innerHTML = '';
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 data.services.forEach((reserva, index) => {
-                    const [nombre, fecha, hora, tarjeta] = reserva.split(', ');
+                    const { nombre, fecha, hora, tarjeta } = reserva; // Extraer propiedades correctamente
 
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     tableBody.appendChild(row);
                 });
 
-                //  Agregar evento a los botones de eliminar después de generar la tabla
+                // Agregar eventos a los botones de eliminar
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const index = event.target.getAttribute('data-index');
-                        console.log("Intentando eliminar reserva en posición:", index); //depuración
+                        console.log("Intentando eliminar reserva en posición:", index);
                         deleteReserva(index);
                     });
                 });

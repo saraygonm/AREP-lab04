@@ -86,20 +86,6 @@ Las pruebas incluyen validaciones de:
 - Endpoints principales (/App/hello, /App/pi)
 - API de reservas (GET, POST, DELETE)
 - Archivos estáticos (index.html, imágenes)
-------------------------------
-
-### 📂 Cambios Realizados en el Proyecto
-Para agregar estos endpoints y mejorar la estructura del servidor, se realizaron las siguientes modificaciones:
-
-#### 📉 Se agregaron los endpoints `/App/hello?name=Pedro` y `/App/pi`
-- Ahora el servidor responde dinámicamente a consultas **GET** con parámetros.
-
-#### 📉 Implementación de extracción de parámetros en las rutas GET
-- Se añadió soporte para manejar **query parameters** en las solicitudes.
-
-#### 📉 Se ajustó la ubicación de archivos estáticos
-- Antes estaban en `static/`, ahora se sirven desde `target/classes/webroot/`.
-
 
 ------------------
 
@@ -174,6 +160,68 @@ Los navegadores bloquean solicitudes DELETE por seguridad, entonces para probar 
 ----------
 
 ### 🏗️ Arquitectura
+
+
+###  Arquitectura desplegada en Docker
+- Construcción de la imagen Docker
+
+<p align="center">
+<img src="static/images/docker/DockerConstruyaImagen.png" alt="" width="700px">
+</p>
+
+- Verificación de que la imagen fue creada
+<p align="center">
+<img src="static/images/docker/Dockerimages.png" alt="" width="700px">
+</p>
+
+- Se crean y se ejecutan tres contenedores independientes 
+<p align="center">
+<img src="static/images/docker/docker3.png" alt="" width="700px">
+</p>
+
+- Verificación que los contenedores están corriendo
+
+<p align="center">
+<img src="static/images/docker/docker-ps.png" alt="" width="700px">
+</p>
+
+De igual manera, utilizamos Postman para realizar una solicitud de tipo POST 
+<!-- Creación de tabla para alinear las imágenes lado a lado.-->
+| <img src="static/images/docker/post-postman.png"  width="500px"> | <img src="static/images/docker/post-postman2.png" width="500px"> | <img src="static/images/docker/post3.png" width="500px"> |
+|------------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------|
+| **Solicitud Post reserva1**                                      | **Solicitud Post reserva2**                                      | **Solicitud Post reserva3**                              |
+
+Verificación de que los contenedores funcionen correctamente en el navegador.
+
+| <img src="static/images/docker/navegador-postman.png"  width="500px"> | <img src="static/images/docker/navegador-postman2.png" width="500px"> | <img src="static/images/docker/navegador3.png"  width="500px"> |
+|-----------------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------|
+| **Visualizacion localhost:34000**                 | **Visualizacion localhost:34001**                                     | **Visualizacion localhost:34002**                              |
+
+- Ahora se inician todos los servicios definidos en el docker-compose.yml
+<p align="center">
+<img src="static/images/docker/dockercompose.png" alt="" width="700px">
+</p>
+
+
+- Luego se crea un nuevo repositorio en Dockerhub,  creamos una etiqueta para la imagen desde la terminal y verificamos su existencia 
+<!-- Creación de tabla para alinear las imágenes lado a lado.-->
+| <img src="static/images/docker/dockhub.png" width="500px"> | <img src="static/images/docker/dockhub1.png" width="500px"> |
+|------------------------------------------------------------|-------------------------------------------------------------|
+| **Repositorio en DockerHub**                               | **Verificación en la terminal**                             |
+
+- Para subir la imagen  debemos seguir los siguientes comandos 
+<p align="center">
+<img src="static/images/docker/comands.png" alt="" width="700px">
+</p>
+
+- Luego veremos nuestra imagen en DockerHub
+<p align="center">
+<img src="static/images/docker/comand1.png" alt="" width="700px">
+</p>
+
+
+
+
 #### Diagrama de clases 
 
 <p align="center">
