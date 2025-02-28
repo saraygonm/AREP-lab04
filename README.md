@@ -30,12 +30,12 @@ Para ejecutar el proyecto necesitas instalar:
 
 **1. Clona el repositorio:**
    ```sh
-   git clone https://github.com/saraygonm/AREP-Taller02.git
+   git clone https://github.com/saraygonm/AREP-lab04.git
    ```
 
 **2. Entra en la carpeta del proyecto:**
    ```sh
-   cd AREP-Taller02
+   cd AREP-Taller04
    ```
 
 **3. Compila el proyecto con Maven (debe estar previamente configurado):**
@@ -73,48 +73,31 @@ la aplicación.*
 
 Para ejecutar las pruebas automáticas, el servidor debe estar en ejecución
  ```sh
-   mvn exec:java
+   mvn clean test
    ```
 
 <!-- Creación de tabla para alinear las imágenes lado a lado.-->
-| <img src="static/images/read/test1.png" alt="Descarga local" width="500px"> | <img src="static/images/read/test2.png" alt="Importar carpetas" width="500px"> |
-|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| **Imagen 1: Página web en navegador**                                       | **Imagen 2: Terminal IDE**                                                     |
+| <img src="static/images/read/test04.png" alt="Descarga local" width="700px"> | 
+|------------------------------------------------------------------------------|
+| **Imagen 1: Prueba**                                                         |
 
 
 Las pruebas incluyen validaciones de:
-- Endpoints principales (/App/hello, /App/pi)
-- API de reservas (GET, POST, DELETE)
-- Archivos estáticos (index.html, imágenes)
-
+- **testPostServices:** Verifica que se pueda agregar una reserva correctamente.
+- **testGetAll:** Asegura que el método devuelve la lista de reservas en formato JSON.
+- **testDeleteService:** Comprueba que se pueda eliminar una reserva correctamente.
+- **testClearAllServices:** Confirma que todas las reservas puedan ser eliminadas.
 ------------------
 
 ###  📚 Endpoints Disponibles en el Servidor
 
-#### ➕ 1. Endpoints para archivos estáticos
+#### ➕ 1. Endpoint para archivos estáticos
 - 🌍 [http://localhost:8080/index.html](http://localhost:8080/index.html) → Página principal
 
 <p align="center">
 <img src="static/images/read/1.png" alt="" width="700px">
 </p>
 
-- 🌍 [http://localhost:8080/static/images/calendario.png](http://localhost:8080/static/images/calendario.png) → Imagen de calendario
-
-<p align="center">
-<img src="static/images/read/4.png" alt="" width="700px">
-</p>
-
-- 🌍 [http://localhost:8080/static/images/tarjeta.png](http://localhost:8080/static/images/tarjeta.png) → Imagen de tarjeta
-
-<p align="center">
-<img src="static/images/read/3.png" alt="" width="700px">
-</p>
-
-- 🌍 [http://localhost:8080/static/style.css](http://localhost:8080/static/style.css) → CSS del sitio
-
-<p align="center">
-<img src="static/images/read/5.png" alt="" width="700px">
-</p>
 
 #### 🔢 2. Endpoints REST (API de reservas)
 #### 🔹 Obtener todas las reservas:
@@ -135,31 +118,36 @@ Las pruebas incluyen validaciones de:
 <img src="static/images/read/api.png" alt="" width="700px">
 </p>
 
-#### 🔴 Eliminar una reserva específica (por índice):
-Los navegadores bloquean solicitudes DELETE por seguridad, entonces para probar que funciona la podemos hacer en el terminal de tu IDE de la siguiente manera:
-- **DELETE** `http://localhost:8080/api/services/{id}`
-- **Ejemplo:** `http://localhost:8080/api/services/0`
 
-<p align="center">
-<img src="static/images/read/delete.png" alt="" width="700px">
-</p>
-
-
-#### 💡 3. Endpoints adicionales solicitados en el enunciado
-- 🌍 [http://localhost:8080/App/hello?name=Pedro](http://localhost:8080/App/hello?name=Pedro) → Devuelve **"Hello Pedro!"**
-<p align="center">
-<img src="static/images/read/pedro.png" alt="" width="700px">
-</p>
-
-- 🌍 [http://localhost:8080/App/pi](http://localhost:8080/App/pi) → Devuelve **"3.141592653589793"**
-
-<p align="center">
-<img src="static/images/read/pi.png" alt="" width="700px">
-</p>
 
 ----------
 
 ### 🏗️ Arquitectura
+
+#### Diagrama de clases
+
+<p align="center">
+<img src="static/images/read/class_diagram.png" alt="" width="700px">
+</p>
+
+
+#### Diagrama de Secuencia
+
+<p align="center">
+<img src="static/images/read/DiaSecuencia.png" alt="" width="700px">
+</p>
+
+#### Diagrama de despliegue
+
+<p align="center">
+<img src="static/images/read/Diadespliegue.png" alt="" width="700px">
+</p>
+
+#### Diagrama Componentes
+
+<p align="center">
+<img src="static/images/read/DIacompo.png" alt="" width="300px">
+</p>
 
 
 ###  Arquitectura desplegada en Docker
@@ -222,11 +210,6 @@ Verificación de que los contenedores funcionen correctamente en el navegador.
 
 
 
-#### Diagrama de clases 
-
-<p align="center">
-<img src="static/images/read/class_diagram.png" alt="" width="700px">
-</p>
 
 #### Servidor Java
 
@@ -242,19 +225,11 @@ Verificación de que los contenedores funcionen correctamente en el navegador.
 
 - `/api/services:` Devuelve una lista de todas las reservas en formato JSON.
 
-- `/api/imgTarjeta:` Devuelve la imagen de la tarjeta almacenada en el servidor.
-
-- Otros archivos estáticos como index.html, style.css y script.js se sirven desde el directorio Recursos/static.
 
 **POST:**
 
 - `/api/services:` Agrega una nueva reserva a la lista de reservas. El cuerpo de la solicitud debe contener un JSON con la reserva.
 
-**DELETE:**
-
-- `/api/services/{id}:` Elimina una reserva específica.
-
-- `/api/services/clear:` Borra todas las reservas.
 
 -------------------- 
 ### 🌐 Frontend
