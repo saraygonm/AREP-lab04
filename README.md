@@ -208,6 +208,7 @@ Verificación de que los contenedores funcionen correctamente en el navegador.
 </p>
 
 
+🔗 [Ver video completo]([https://www.youtube.com/watch?v=VIDEO_ID](https://youtu.be/osw9NU27ewQ?si=mifjqdQHUhapAzqu))
 
 
 
